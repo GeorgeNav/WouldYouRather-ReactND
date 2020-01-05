@@ -40,6 +40,7 @@ class App extends Component {
                 path='/leader-board'
                 component={LeaderBoard}/>
             </Fragment>}
+          <Route exact path='/login' component={Login}/>
           <Route component={PageNotFound}/>
         </Switch>
       </Container>
