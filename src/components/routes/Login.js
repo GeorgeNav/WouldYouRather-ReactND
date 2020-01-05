@@ -41,7 +41,7 @@ const Login = (props) => {
                       props.dispatch(logInUserAction(user.id))
                     }}
                     as={Link}
-                    to='/home'>
+                    to='/'>
                     Login!
                     </Button>
                 </Figure.Caption>
