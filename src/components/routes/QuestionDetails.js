@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { handleUserVote } from '../../actions/shared'
+import PageNotFound from './PageNotFound'
 import {
   Container,
   Col,
@@ -9,7 +10,6 @@ import {
   Button,
   ProgressBar,
 } from 'react-bootstrap'
-import { Redirect } from 'react-router-dom'
 
 class QuestionDetails extends Component {
   handleVote = (option) => (e) => {
@@ -18,19 +18,13 @@ class QuestionDetails extends Component {
   }
   
   render() {
-    if(!this.props.validQuestionID)
-      return (<Redirect
-        to={{
-          pathname: '/404',
-          state: {
-            title: 'Invalid Quesiton ID',
-            description: 'Try a different question ID',
-          }
-        }}/>)
     const {
       authedUser,
       question,
     } = this.props
+    if(!authedUser)
+      return <PageNotFound/>
+    
     let answered = Object.keys(authedUser.answers)
       .includes(question.id)
     
@@ -108,13 +102,14 @@ class QuestionDetails extends Component {
 }
 
 const mapStateToProps = ({users, questions, authedUserID}, {match}) => {
-  console.log(match)
+  console.log('Question Details')
+  if(!authedUserID) return {validQuestionID: false}
   const qid = match.params.question_id
   
   return Object.keys(questions).includes(qid) ? {
     author: users[questions[qid].author],
     question: questions[qid],
-    authedUser: users[authedUserID],
+    authedUser: authedUserID ? users[authedUserID] : null,
     validQuestionID: true,
   } : { validQuestionID: false }
 }

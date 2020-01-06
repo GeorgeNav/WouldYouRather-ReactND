@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Questions from '../shared/Questions'
 import { Row } from 'react-bootstrap'
+import PageNotFound from './PageNotFound';
 
 class Home extends Component {
   render() {
@@ -19,7 +20,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = ({ users, questions, authedUserID }) => {
-  if (!questions || !users)
+  if (!questions || !users || !authedUserID)
     return {
       answeredQuestions: [],
       unansweredQuestions: [],

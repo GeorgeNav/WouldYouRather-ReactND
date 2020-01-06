@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { getDatabaseData } from '../actions/shared'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 
 import Header from './header/Header'
 import Home from './routes/Home'
@@ -24,24 +24,29 @@ class App extends Component {
       <Container fluid
         algin='center'>
         <Switch>
-          {!this.props.authedUserID
-          ? <Route exact path='/' component={Login}/>
-          : <Fragment>
-              <Route exact
-                path='/'
-                component={Home}/>
-              <Route
-                path='/questions/:question_id'
-                component={QuestionDetails}/>
-              <Route
-                path='/add'
-                component={NewQuestion}/>
-              <Route
-                path='/leader-board'
-                component={LeaderBoard}/>
-            </Fragment>}
-          <Route exact path='/login' component={Login}/>
-          <Route component={PageNotFound}/>
+          <Route exact
+            path='/login'
+            component={Login}/>
+          <Route exact
+            path='/'>
+            {!this.props.authedUserID && <Redirect to='/login'/>}
+            <Home/>
+          </Route>
+          <Route
+            path='/questions/:question_id'
+            component={QuestionDetails}/>
+          <Route exact
+            path='/add'>
+            {!this.props.authedUserID && <Redirect to='/login'/>}
+            <NewQuestion/>
+          </Route>
+          <Route exact
+            path='/leader-board'>
+            {!this.props.authedUserID && <Redirect to='/login'/>}
+            <LeaderBoard/>
+          </Route>
+          <Route
+            component={PageNotFound}/>
         </Switch>
       </Container>
     </Container>)
