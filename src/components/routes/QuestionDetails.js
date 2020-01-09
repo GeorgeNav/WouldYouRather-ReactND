@@ -18,12 +18,12 @@ class QuestionDetails extends Component {
   }
   
   render() {
+    if(!this.props.validQuestionID)
+      return <PageNotFound/>
     const {
       authedUser,
       question,
     } = this.props
-    if(!authedUser)
-      return <PageNotFound/>
     
     let answered = Object.keys(authedUser.answers)
       .includes(question.id)

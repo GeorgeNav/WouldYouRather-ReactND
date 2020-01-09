@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getDatabaseData } from '../actions/shared'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 
 import Header from './header/Header'
 import Home from './routes/Home'
@@ -10,8 +10,10 @@ import Login from './routes/Login'
 import NewQuestion from './routes/NewQuestion'
 import QuestionDetails from './routes/QuestionDetails'
 import PageNotFound from './routes/PageNotFound'
-
 import { Container } from 'react-bootstrap'
+import PrivateRoute from './routes/PrivateRoute'
+
+export const QuestionContext = React.createContext()
 
 class App extends Component {
   componentDidMount() {
@@ -27,24 +29,25 @@ class App extends Component {
           <Route exact
             path='/login'
             component={Login}/>
-          <Route exact
+          <PrivateRoute exact
             path='/'>
-            {!this.props.authedUserID && <Redirect to='/login'/>}
             <Home/>
-          </Route>
-          <Route
-            path='/questions/:question_id'
-            component={QuestionDetails}/>
-          <Route exact
+          </PrivateRoute>
+          <PrivateRoute
+            path='/questions/:question_id'>
+            <QuestionContext.Consumer>{({match}) => {
+              console.log('match: ',match)
+              return <QuestionDetails match={match}/>
+            }}</QuestionContext.Consumer>
+          </PrivateRoute>
+          <PrivateRoute exact
             path='/add'>
-            {!this.props.authedUserID && <Redirect to='/login'/>}
             <NewQuestion/>
-          </Route>
-          <Route exact
-            path='/leader-board'>
-            {!this.props.authedUserID && <Redirect to='/login'/>}
+          </PrivateRoute>
+          <PrivateRoute exact
+            path='/leaderboard'>
             <LeaderBoard/>
-          </Route>
+          </PrivateRoute>
           <Route
             component={PageNotFound}/>
         </Switch>

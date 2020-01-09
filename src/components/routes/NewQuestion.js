@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Container, Button, Card, InputGroup, Form, FormControl } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { handleAddQuestion } from '../../actions/questions'
+import { withRouter } from 'react-router-dom'
 
 class NewQuestion extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class NewQuestion extends Component {
 
   submitQuestion = () => {
     this.props.dispatch(handleAddQuestion(this.state))
+    this.props.history.push('/')
   }
 
   handleChange = (e) => {
@@ -85,7 +87,7 @@ class NewQuestion extends Component {
 }
 
 const mapStateToProps = ({authedUserID}) => ({
-  authedUser: authedUserID
+  authedUser: authedUserID,
 })
 
-export default connect(mapStateToProps)(NewQuestion)
+export default connect(mapStateToProps)(withRouter(NewQuestion))

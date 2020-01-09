@@ -1,10 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { Card, Accordion, Button, Figure } from 'react-bootstrap'
 import { logInUserAction } from '../../actions/authedUser'
 
 const Login = (props) => {
+  let history = useHistory()
+  let location = useLocation()
+  let { from } = location.state
+    ?? { from: { pathname: '/' } }
+
   return (<Card
     style={{
       margin: '50px'
@@ -39,9 +44,8 @@ const Login = (props) => {
                   <Button
                     onClick={(_) => {
                       props.dispatch(logInUserAction(user.id))
-                    }}
-                    as={Link}
-                    to='/'>
+                      history.replace(from)
+                    }}>
                     Login!
                     </Button>
                 </Figure.Caption>
@@ -56,7 +60,7 @@ const Login = (props) => {
 
 const mapStateToProps = ({users, authedUserID}) => ({
   users: Object.values(users),
-  authedUserID
+  authedUserID,
 })
  
 export default connect(mapStateToProps)(Login)

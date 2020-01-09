@@ -1,21 +1,42 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Button } from 'react-bootstrap'
 import Questions from '../shared/Questions'
-import { Row } from 'react-bootstrap'
-import PageNotFound from './PageNotFound';
+import { Col, Row } from 'react-bootstrap'
 
 class Home extends Component {
+  state = { unAnswered: true }
+
   render() {
-    return (<Row>
-      <Questions
-        show={true}
-        title='Unanswered Questions'
-        questions={this.props.unansweredQuestions} />
-      <Questions
-        show={false}
-        title='Answered Questions'
-        questions={this.props.answeredQuestions} />
-    </Row>);
+    return <Col>
+      <Row
+        className= 'justify-content-center'>
+        <Button
+          style={{margin: '15px'}}
+          onClick={ _ => this.setState(prevState => ({
+            unAnswered: !prevState.unAnswered
+          }))}>
+          <h1
+            style={{margin: '15px'}}>
+            {this.state.unAnswered
+              ? 'Show Answered'
+              : 'Show Unanswered'}
+          </h1>
+        </Button>
+      </Row>
+      <Row
+        className= 'justify-content-center'>
+        {this.state.unAnswered
+          ? <Questions
+              show={this.state.unAnswered}
+              title='Unanswered Questions'
+              questions={this.props.unansweredQuestions} />
+          : <Questions
+              show={!this.state.unAnswered}
+              title='Answered Questions'
+              questions={this.props.answeredQuestions} />}
+      </Row>
+    </Col>
   }
 }
 
