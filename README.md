@@ -1,6 +1,6 @@
 # Would You Rather? the App
 
-In this project, a user can login as a one predifined user at a time. When the user logs in, they can view, vote, and create a 'would you rather' style questions with two options. There is also a dashboard that displays scores from highest to lowest.
+In this project a user can login as one predifined user at a time. When the user logs in they can view, vote, and create 'would you rather' style questions with two options. There is also a dashboard that displays scores from highest to lowest.
 
 ## Available Scripts
 
